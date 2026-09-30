@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Open Communication AAC speech bubble</title>
+  <rect width="512" height="512" rx="96" fill="#123b5d"/>
+  <path d="M104 112h304a48 48 0 0 1 48 48v176a48 48 0 0 1-48 48H248l-96 72v-72h-48a48 48 0 0 1-48-48V160a48 48 0 0 1 48-48Z" fill="#fff"/>
+  <circle cx="164" cy="248" r="28" fill="#123b5d"/>
+  <circle cx="256" cy="248" r="28" fill="#123b5d"/>
+  <circle cx="348" cy="248" r="28" fill="#123b5d"/>
+</svg>

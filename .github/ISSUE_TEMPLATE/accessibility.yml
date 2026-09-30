@@ -1,0 +1,36 @@
+name: Accessibility barrier
+description: Report a barrier using the communication application.
+title: "[Accessibility]: "
+labels: [accessibility]
+body:
+  - type: markdown
+    attributes:
+      value: Please do not include health records, private messages, names, photographs, or other identifying information.
+  - type: textarea
+    id: barrier
+    attributes:
+      label: Barrier
+      description: What task was difficult or impossible?
+    validations:
+      required: true
+  - type: dropdown
+    id: access-method
+    attributes:
+      label: Access method
+      options:
+        - Touch
+        - Mouse or trackball
+        - Keyboard
+        - Switch scanning
+        - Eye gaze
+        - Voice control
+        - Screen reader
+        - Other or unknown
+  - type: textarea
+    id: expected
+    attributes:
+      label: What would make the task work better?
+  - type: input
+    id: environment
+    attributes:
+      label: Device, operating system, and browser
