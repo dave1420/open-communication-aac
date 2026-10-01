@@ -17,8 +17,10 @@ export function normalizeCustomPhraseLabel(value: string): string {
 export interface Preferences {
   columns: 2 | 3 | 4;
   targetSize: 72 | 88 | 104;
+  textSize: 20 | 24 | 28;
   lockoutMs: 0 | 300 | 600 | 900;
   speakOnSelect: boolean;
+  showSymbols: boolean;
   voiceURI: string;
   speechRate: 0.75 | 0.9 | 1 | 1.1;
   speechPitch: 0.8 | 1 | 1.2;
@@ -27,8 +29,10 @@ export interface Preferences {
 export const DEFAULT_PREFERENCES: Preferences = {
   columns: 3,
   targetSize: 88,
+  textSize: 20,
   lockoutMs: 600,
   speakOnSelect: true,
+  showSymbols: true,
   voiceURI: "",
   speechRate: 0.9,
   speechPitch: 1,

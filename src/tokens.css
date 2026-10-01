@@ -1,0 +1,30 @@
+:root {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-synthesis: none;
+  color: var(--ink);
+  background: var(--paper);
+  --paper: #f7f6f2;
+  --surface: #fffefa;
+  --surface-soft: #edf1ed;
+  --ink: #172b3a;
+  --text-muted: #52635e;
+  --primary: #165e63;
+  --primary-hover: #104b50;
+  --border: #748882;
+  --divider: #d5dcd6;
+  --focus: #172b3a;
+  --danger: #8b3339;
+  --radius: 10px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --board-columns: 3;
+  --target-size: 88px;
+  --text-size: 1.25rem;
+  --key-text-size: calc(var(--text-size) + 0.25rem);
+  --message-text-size: calc(var(--text-size) + 0.5rem);
+  --support-text-size: max(1rem, calc(var(--text-size) - 0.25rem));
+  --control-size: max(56px, calc(var(--target-size) - 24px));
+}

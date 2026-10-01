@@ -9,6 +9,9 @@ Current release candidate: **0.1.0**. See [CHANGELOG.md](CHANGELOG.md).
 ## Current prototype
 
 - Large, adjustable phrase targets
+- Adjustable starter, prediction, keyboard, and speech-control sizes
+- Separate saved text sizes with larger bold keyboard letters and readable communication labels
+- Optional phrase pictures and a saved text-only presentation
 - Adjustable repeat-tap protection
 - Optional one-tap speech
 - A physical/native keyboard path and a large on-screen keyboard
@@ -57,6 +60,8 @@ For production-like offline testing, run `npm run build`, then `npm run preview`
 - Maintain a low-tech backup.
 
 See [SOLUTION_OPTIONS.md](SOLUTION_OPTIONS.md) for the evaluated approaches and [docs/PRODUCT_PRINCIPLES.md](docs/PRODUCT_PRINCIPLES.md) for product boundaries.
+
+See [docs/VISUAL_STYLE.md](docs/VISUAL_STYLE.md) for the shared visual style and tablet review guide.
 
 ## Status and licence
 

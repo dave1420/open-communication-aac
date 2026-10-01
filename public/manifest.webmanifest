@@ -4,8 +4,8 @@
   "description": "A free, offline-first, tremor-aware communication aid.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4f7fa",
-  "theme_color": "#123b5d",
+  "background_color": "#f7f6f2",
+  "theme_color": "#165e63",
   "icons": [
     {
       "src": "/icon.svg",

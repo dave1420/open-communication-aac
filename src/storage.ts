@@ -20,11 +20,18 @@ export function loadPreferences(): Preferences {
       targetSize: [72, 88, 104].includes(candidate.targetSize ?? -1)
         ? (candidate.targetSize as Preferences["targetSize"])
         : DEFAULT_PREFERENCES.targetSize,
+      textSize: [20, 24, 28].includes(candidate.textSize ?? -1)
+        ? (candidate.textSize as Preferences["textSize"])
+        : DEFAULT_PREFERENCES.textSize,
       lockoutMs: [0, 300, 600, 900].includes(candidate.lockoutMs ?? -1)
         ? (candidate.lockoutMs as Preferences["lockoutMs"])
         : DEFAULT_PREFERENCES.lockoutMs,
       speakOnSelect:
         candidate.speakOnSelect ?? DEFAULT_PREFERENCES.speakOnSelect,
+      showSymbols:
+        typeof candidate.showSymbols === "boolean"
+          ? candidate.showSymbols
+          : DEFAULT_PREFERENCES.showSymbols,
       voiceURI:
         typeof candidate.voiceURI === "string"
           ? candidate.voiceURI

@@ -1,4 +1,5 @@
 import "./styles.css";
+import { icon } from "./icons";
 import { version } from "../package.json";
 import {
   PHRASES,
@@ -41,9 +42,9 @@ if (!app) throw new Error("Application root was not found.");
 
 app.innerHTML = `
   <header class="app-header">
-    <div>
-      <p class="eyebrow">Communication aid</p>
-      <h1>Open Communication AAC</h1>
+    <div class="app-brand">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 8h16v12H14l-6 5V8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 12h8M12 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+      <h1>Open Communication <span class="brand-note">AAC</span></h1>
     </div>
     <button id="settings-toggle" class="secondary-button mode-button" type="button" aria-expanded="false" aria-controls="settings-panel custom-phrase-panel">Edit &amp; settings</button>
   </header>
@@ -51,13 +52,15 @@ app.innerHTML = `
   <main>
     <section class="message-panel" aria-labelledby="message-heading">
       <h2 id="message-heading">My message</h2>
-      <label class="visually-hidden" for="message-input">Message to speak</label>
-      <textarea id="message-input" class="message-output" rows="2" autocomplete="off" autocapitalize="sentences" spellcheck="true" aria-describedby="status" placeholder="Choose a phrase or type a message below."></textarea>
-      <div class="message-actions" aria-label="Message actions">
-        <button id="speak" class="primary-button" type="button">Speak</button>
-        <button id="repeat-speech" class="secondary-button" type="button">Repeat</button>
-        <button id="undo" class="secondary-button" type="button">Undo</button>
-        <button id="clear" class="danger-button" type="button">Clear text</button>
+      <div class="message-compose">
+        <label class="visually-hidden" for="message-input">Message to speak</label>
+        <textarea id="message-input" class="message-output" rows="2" autocomplete="off" autocapitalize="sentences" spellcheck="true" aria-describedby="status" placeholder="Your message"></textarea>
+        <div class="message-actions" aria-label="Message actions">
+          <button id="speak" class="primary-button" type="button">${icon("speak")}<span>Speak</span></button>
+          <button id="repeat-speech" class="secondary-button" type="button">${icon("repeat")}<span>Repeat</span></button>
+          <button id="undo" class="secondary-button" type="button">${icon("undo")}<span>Undo</span></button>
+          <button id="clear" class="danger-button" type="button">${icon("clear")}<span>Clear text</span></button>
+        </div>
       </div>
       <p id="status" class="status" role="status" aria-live="polite"></p>
     </section>
@@ -73,13 +76,21 @@ app.innerHTML = `
             <option value="4">4</option>
           </select>
         </label>
-        <label>Button size
+        <label>Communication button size
           <select id="target-size">
             <option value="72">Large</option>
             <option value="88">Extra large</option>
             <option value="104">Maximum</option>
           </select>
         </label>
+        <label>Text size
+          <select id="text-size" aria-describedby="text-size-note">
+            <option value="20">Large (20 px)</option>
+            <option value="24">Extra large (24 px)</option>
+            <option value="28">Maximum (28 px)</option>
+          </select>
+        </label>
+        <p id="text-size-note" class="access-note">Text size is separate from button size. Keyboard letters are larger still. Larger text may wrap and need more scrolling.</p>
         <label>Repeat-tap protection
           <select id="lockout">
             <option value="0">Off</option>
@@ -91,6 +102,10 @@ app.innerHTML = `
         <label class="checkbox-label">
           <input id="speak-on-select" type="checkbox" />
           Speak each phrase when selected
+        </label>
+        <label class="checkbox-label">
+          <input id="show-symbols" type="checkbox" />
+          Show pictures beside phrase words
         </label>
         <label>Voice
           <select id="voice-select">
@@ -114,22 +129,18 @@ app.innerHTML = `
         </label>
         <button id="preview-voice" class="secondary-button voice-preview" type="button">Preview voice</button>
         <p class="voice-note">Installed voices stay on this device. Voices labelled online may send spoken text to the browser's speech service.</p>
+        <p class="access-note">Size changes apply to phrases, starters, suggestions, speech controls, and keyboard keys. Larger controls may need more screen space. Predictions run on this device; typed messages are not saved.</p>
       </div>
     </section>
 
     <section class="typing-panel" aria-labelledby="typing-heading">
-      <div class="section-heading typing-heading">
-        <div>
-          <h2 id="typing-heading">Type a message</h2>
-          <p>Use the device keyboard or the large on-screen keyboard.</p>
-        </div>
-      </div>
+      <h2 id="typing-heading" class="visually-hidden">Type a message</h2>
       <div class="starter-area" aria-labelledby="starter-heading">
-        <h3 id="starter-heading">Common starters and words</h3>
+        <h3 id="starter-heading">Start a sentence</h3>
         <div id="starter-rows" class="starter-rows"></div>
       </div>
       <div class="suggestion-area" aria-labelledby="suggestion-heading">
-        <h3 id="suggestion-heading">Word suggestions</h3>
+        <h3 id="suggestion-heading" class="visually-hidden">Word suggestions</h3>
         <div id="word-suggestions" class="word-suggestions" aria-live="polite">
           <p class="suggestion-hint">Type a letter to see suggestions.</p>
         </div>
@@ -143,14 +154,12 @@ app.innerHTML = `
           <button type="button" data-key="question">Question mark</button>
         </div>
       </div>
-      <p class="privacy-reminder">Predictions run on this device. Typed messages are not saved.</p>
     </section>
 
-    <section aria-labelledby="phrases-heading">
+    <section class="quick-phrases" aria-labelledby="phrases-heading">
       <div class="section-heading phrase-heading">
         <div>
           <h2 id="phrases-heading">Quick phrases</h2>
-          <p>Select a phrase to add it to the message.</p>
         </div>
         <button id="edit-phrases" class="secondary-button" type="button" aria-expanded="false" aria-controls="custom-phrase-panel">Edit phrases</button>
       </div>
@@ -177,10 +186,19 @@ app.innerHTML = `
       <span>Open Communication AAC</span>
       <span>Version ${version}</span>
     </footer>
+    <dialog id="clear-dialog" class="clear-dialog" aria-labelledby="clear-heading" aria-describedby="clear-note">
+      <h2 id="clear-heading">Clear this message?</h2>
+      <p id="clear-note">You can restore it with Undo.</p>
+      <div class="clear-dialog-actions">
+        <button id="keep-message" class="secondary-button" type="button" autofocus>Keep message</button>
+        <button id="confirm-clear" class="danger-button" type="button">Clear text</button>
+      </div>
+    </dialog>
   </main>
 `;
 
 const messageInput = getElement<HTMLTextAreaElement>("message-input");
+const clearDialog = getElement<HTMLDialogElement>("clear-dialog");
 const status = getElement<HTMLParagraphElement>("status");
 const phraseBoard = getElement<HTMLDivElement>("phrase-board");
 const customPhraseForm = getElement<HTMLFormElement>("custom-phrase-form");
@@ -197,8 +215,10 @@ const customPhrasePanel = getElement<HTMLElement>("custom-phrase-panel");
 const editPhrases = getElement<HTMLButtonElement>("edit-phrases");
 const columns = getElement<HTMLSelectElement>("columns");
 const targetSize = getElement<HTMLSelectElement>("target-size");
+const textSize = getElement<HTMLSelectElement>("text-size");
 const lockout = getElement<HTMLSelectElement>("lockout");
 const speakOnSelect = getElement<HTMLInputElement>("speak-on-select");
+const showSymbols = getElement<HTMLInputElement>("show-symbols");
 const voiceSelect = getElement<HTMLSelectElement>("voice-select");
 const speechRate = getElement<HTMLSelectElement>("speech-rate");
 const speechPitch = getElement<HTMLSelectElement>("speech-pitch");
@@ -234,6 +254,7 @@ function speak(text: string, rememberForRepeat = true): void {
 
 function setStatus(text: string): void {
   status.textContent = text;
+  status.title = text;
 }
 
 function composeFullMessage(): string {
@@ -314,7 +335,7 @@ function makeCustomPhraseButton(phrase: CustomPhrase): HTMLButtonElement {
   const symbol = document.createElement("span");
   symbol.className = "phrase-symbol";
   symbol.setAttribute("aria-hidden", "true");
-  symbol.textContent = "★";
+  symbol.innerHTML = icon("custom");
   const label = document.createElement("span");
   label.textContent = phrase.label;
   button.append(symbol, label);
@@ -381,7 +402,7 @@ function updateSuggestions(): void {
       messageText = replaceCurrentWord(messageText, suggestion);
       rememberSessionWords(suggestion);
       updateMessage();
-      messageInput.focus();
+      messageInput.focus({ preventScroll: true });
       setStatus(`Completed word: ${suggestion}`);
     });
     wordSuggestions.append(button);
@@ -395,7 +416,7 @@ function appendQuickText(value: string): void {
   messageText = `${messageText}${separator}${insertion} `;
   rememberSessionWords(value);
   updateMessage();
-  messageInput.focus();
+  messageInput.focus({ preventScroll: true });
   setStatus(`Added: ${value}`);
 }
 
@@ -426,8 +447,18 @@ function applyPreferences(): void {
   );
   columns.value = String(preferences.columns);
   targetSize.value = String(preferences.targetSize);
+  document.documentElement.style.setProperty(
+    "--text-size",
+    `${preferences.textSize / 16}rem`,
+  );
+  textSize.value = String(preferences.textSize);
+  document.documentElement.dataset.textSize = String(preferences.textSize);
   lockout.value = String(preferences.lockoutMs);
   speakOnSelect.checked = preferences.speakOnSelect;
+  showSymbols.checked = preferences.showSymbols;
+  document.documentElement.dataset.symbols = preferences.showSymbols
+    ? "visible"
+    : "hidden";
   speechRate.value = String(preferences.speechRate);
   speechPitch.value = String(preferences.speechPitch);
   if (
@@ -486,7 +517,7 @@ function renderPhrases(): void {
     button.type = "button";
     button.className = `phrase-button category-${phrase.category}`;
     button.setAttribute("aria-label", phrase.label);
-    button.innerHTML = `<span class="phrase-symbol" aria-hidden="true">${phrase.symbol}</span><span>${phrase.label}</span>`;
+    button.innerHTML = `<span class="phrase-symbol" aria-hidden="true">${icon(phrase.id)}</span><span>${phrase.label}</span>`;
     button.addEventListener("click", () => selectPhrase(phrase.label));
     phraseBoard.append(button);
   }
@@ -513,7 +544,7 @@ function appendKeyboardText(key: string, value: string): void {
   rememberState();
   messageText += value;
   updateMessage();
-  messageInput.focus();
+  messageInput.focus({ preventScroll: true });
 }
 
 function renderKeyboard(): void {
@@ -576,6 +607,14 @@ targetSize.addEventListener("change", () => {
   applyPreferences();
 });
 
+textSize.addEventListener("change", () => {
+  preferences = {
+    ...preferences,
+    textSize: Number(textSize.value) as Preferences["textSize"],
+  };
+  applyPreferences();
+});
+
 lockout.addEventListener("change", () => {
   preferences = {
     ...preferences,
@@ -586,6 +625,11 @@ lockout.addEventListener("change", () => {
 
 speakOnSelect.addEventListener("change", () => {
   preferences = { ...preferences, speakOnSelect: speakOnSelect.checked };
+  applyPreferences();
+});
+
+showSymbols.addEventListener("change", () => {
+  preferences = { ...preferences, showSymbols: showSymbols.checked };
   applyPreferences();
 });
 
@@ -658,7 +702,7 @@ getElement<HTMLButtonElement>("use-current-message").addEventListener(
     const label = normalizeCustomPhraseLabel(composeFullMessage());
     if (!label) {
       setStatus("Type a message first, then choose Use current message.");
-      messageInput.focus();
+      messageInput.focus({ preventScroll: true });
       return;
     }
     customPhraseInput.value = label;
@@ -686,18 +730,23 @@ getElement<HTMLButtonElement>("undo").addEventListener("click", () => {
   const previous = stateHistory.pop();
   if (previous !== undefined) messageText = previous;
   updateMessage();
-  messageInput.focus();
+  messageInput.focus({ preventScroll: true });
   setStatus("Last change undone.");
 });
 getElement<HTMLButtonElement>("clear").addEventListener("click", () => {
   if (!composeFullMessage()) return;
-  if (window.confirm("Clear all message text?")) {
-    rememberState();
-    messageText = "";
-    updateMessage();
-    messageInput.focus();
-    setStatus("Message text cleared.");
-  }
+  clearDialog.showModal();
+});
+getElement<HTMLButtonElement>("keep-message").addEventListener("click", () => {
+  clearDialog.close();
+});
+getElement<HTMLButtonElement>("confirm-clear").addEventListener("click", () => {
+  rememberState();
+  messageText = "";
+  updateMessage();
+  clearDialog.close();
+  messageInput.focus({ preventScroll: true });
+  setStatus("Message text cleared.");
 });
 
 messageInput.addEventListener("input", () => {
@@ -721,7 +770,7 @@ onScreenKeyboard.addEventListener("click", (event) => {
     rememberState();
     messageText = messageText.slice(0, -1);
     updateMessage();
-    messageInput.focus();
+    messageInput.focus({ preventScroll: true });
   }
 });
 

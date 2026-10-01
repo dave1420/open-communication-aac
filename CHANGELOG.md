@@ -2,6 +2,19 @@
 
 All notable project changes will be recorded here. Versions use Semantic Versioning.
 
+## Unreleased
+
+- Independent saved text sizes (20, 24, or 28 px labels), with larger bold keyboard letters and message text.
+- Existing saved profiles receive larger default lettering without resetting button, voice, or access preferences.
+- A quieter visual design with compact branding, flat warm surfaces, and clear speech-action hierarchy.
+- Wide tablet message controls beside the field; preserved starter and QWERTY order.
+- Reserved message and prediction space, stronger focus outlines, and stationary pressed feedback.
+- Communication size settings now cover starters, predictions, speech controls, and keyboard keys as well as phrases.
+- Optional local line pictures beside phrase words, with a saved text-only preference.
+- Corrected footer spacing and matching installation colours.
+- Clear confirmation uses large in-app buttons, a safe default focus, and recoverable Undo.
+- A reusable visual style kit and tablet review guide in `docs/VISUAL_STYLE.md`.
+
 ## 0.1.0 - Release candidate
 
 Initial accessible AAC prototype:

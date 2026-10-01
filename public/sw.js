@@ -1,4 +1,4 @@
-const CACHE_NAME = "open-aac-shell-v13";
+const CACHE_NAME = "open-aac-shell-v17";
 const APP_SHELL = ["/", "/index.html", "/manifest.webmanifest", "/icon.svg"];
 
 self.addEventListener("install", (event) => {
